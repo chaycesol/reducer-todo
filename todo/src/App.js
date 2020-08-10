@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useReducer, useState } from 'react';
+import { initialState, reducer } from './reducers/todoReducer';
 import './App.css';
 
 function App() {
+  const [inputValue, setInputValue] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleChanges = (e) => {
+    setInputValue(e.target.value);
+  };
+  console.log(state);
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className='App'>
+      <div className="task-form">
+        <input value={inputValue} onChange={handleChanges} />
+        <button
+          onClick={() => dispatch({ type: 'ADD_TODO', payload: inputValue })}
         >
-          Learn React
-        </a>
-      </header>
+          Add Todo
+        </button>
+      </div>
+      <div className="task-container">
+        {state.map((todo) => (
+          <p>{todo.item}</p>
+        ))}
+      </div>
     </div>
   );
 }
