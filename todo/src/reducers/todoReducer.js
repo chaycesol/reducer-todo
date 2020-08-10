@@ -6,7 +6,7 @@ export const initialState = [
     },
   ];
   
-  export const reducer = (state = [], action) => {
+  export const reducer = (state, action) => {
     switch (action.type) {
       case 'ADD_TODO':
         return [
@@ -17,7 +17,15 @@ export const initialState = [
             id: Date.now(),
           },
         ];
-      default:
-        return state;
-    }
-  };
+        case 'TOGGLE_TODO':
+      return state.map((todo) =>
+        todo.id === action.payload.id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+      case 'FILTER_TODOS':
+        return state.filter((todo) => !todo.completed);
+    default:
+      return state;
+  }
+};
